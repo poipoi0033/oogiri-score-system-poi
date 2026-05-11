@@ -12,27 +12,23 @@ body{
     font-family:sans-serif;
     overflow:hidden;
 }
-
 .wrapper{
     padding:30px;
     display:flex;
     gap:60px;
     align-items:flex-start;
 }
-
 .panel{
-    background:rgba(0,0,0,0.65);
+    background:transparent;
     border-radius:20px;
     padding:25px 35px;
     min-width:360px;
 }
-
 h2{
     margin:0 0 20px;
     font-size:34px;
     color:gold;
 }
-
 .row{
     display:flex;
     justify-content:space-between;
@@ -40,23 +36,26 @@ h2{
     font-size:38px;
     margin:14px 0;
 }
-
-.name{
-    margin-right:30px;
-}
-
+.name{ margin-right:30px; }
 .score{
     font-size:52px;
     font-weight:bold;
     color:#ffffff;
 }
-
 .total{
     margin-top:25px;
     font-size:60px;
     color:gold;
     text-align:center;
     font-weight:bold;
+}
+.overLimit{
+    font-size:80px !important;
+    color:#ffbb55 !important;
+    text-shadow:
+        0 0 5px rgba(255,255,255,0.4),
+        0 0 10px rgba(255,180,80,0.5);
+    transform:scale(1.05);
 }
 </style>
 </head>
@@ -69,17 +68,17 @@ h2{
         <h2>審査員</h2>
 
         <div class="row">
-            <span class="name">審査員A</span>
+            <span class="name" id="judge1Name">審査員A</span>
             <span class="score" id="judge1Score">0</span>
         </div>
 
         <div class="row">
-            <span class="name">審査員B</span>
+            <span class="name" id="judge2Name">審査員B</span>
             <span class="score" id="judge2Score">0</span>
         </div>
 
         <div class="row">
-            <span class="name">審査員C</span>
+            <span class="name" id="judge3Name">審査員C</span>
             <span class="score" id="judge3Score">0</span>
         </div>
 
@@ -90,22 +89,22 @@ h2{
         <h2>回答者累計</h2>
 
         <div class="row">
-            <span class="name">回答者A</span>
+            <span class="name" id="player1Name">回答者A</span>
             <span class="score" id="player1Total">0</span>
         </div>
 
         <div class="row">
-            <span class="name">回答者B</span>
+            <span class="name" id="player2Name">回答者B</span>
             <span class="score" id="player2Total">0</span>
         </div>
 
         <div class="row">
-            <span class="name">回答者C</span>
+            <span class="name" id="player3Name">回答者C</span>
             <span class="score" id="player3Total">0</span>
         </div>
 
         <div class="row">
-            <span class="name">回答者D</span>
+            <span class="name" id="player4Name">回答者D</span>
             <span class="score" id="player4Total">0</span>
         </div>
     </div>
@@ -113,7 +112,6 @@ h2{
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -130,27 +128,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+const defaultNames = {
+  judges:{judge1:"審査員A",judge2:"審査員B",judge3:"審査員C"},
+  players:{player1:"回答者A",player2:"回答者B",player3:"回答者C",player4:"回答者D"}
+};
+
 function getCurrentTotal(data){
-    return (data.judge1 || 0) + (data.judge2 || 0) + (data.judge3 || 0);
+    return Math.min(data.judge1 || 0, 20)
+         + Math.min(data.judge2 || 0, 20)
+         + Math.min(data.judge3 || 0, 20);
 }
-
-onValue(ref(db, 'scores'), (snapshot)=>{
-    const data = snapshot.val() || {};
-
-    setJudgeScore("judge1Score", data.judge1 || 0);
-    setJudgeScore("judge2Score", data.judge2 || 0);
-    setJudgeScore("judge3Score", data.judge3 || 0);
-    document.getElementById("currentTotal").innerText = "合計 " + getCurrentTotal(data);
-});
-
-onValue(ref(db, 'players'), (snapshot)=>{
-    const data = snapshot.val() || {};
-
-    document.getElementById("player1Total").innerText = data.player1 || 0;
-    document.getElementById("player2Total").innerText = data.player2 || 0;
-    document.getElementById("player3Total").innerText = data.player3 || 0;
-    document.getElementById("player4Total").innerText = data.player4 || 0;
-});
 
 function setJudgeScore(id, value){
     const el = document.getElementById(id);
@@ -163,6 +150,39 @@ function setJudgeScore(id, value){
     }
 }
 
+onValue(ref(db, 'scores'), (snapshot)=>{
+    const data = snapshot.val() || {};
+
+    setJudgeScore("judge1Score", data.judge1 || 0);
+    setJudgeScore("judge2Score", data.judge2 || 0);
+    setJudgeScore("judge3Score", data.judge3 || 0);
+
+    document.getElementById("currentTotal").innerText =
+        "合計 " + getCurrentTotal(data);
+});
+
+onValue(ref(db, 'players'), (snapshot)=>{
+    const data = snapshot.val() || {};
+
+    document.getElementById("player1Total").innerText = data.player1 || 0;
+    document.getElementById("player2Total").innerText = data.player2 || 0;
+    document.getElementById("player3Total").innerText = data.player3 || 0;
+    document.getElementById("player4Total").innerText = data.player4 || 0;
+});
+
+onValue(ref(db, 'names'), (snapshot)=>{
+    const names = snapshot.val() || defaultNames;
+
+    ["judge1","judge2","judge3"].forEach(id=>{
+        document.getElementById(id + "Name").innerText =
+            names.judges?.[id] || defaultNames.judges[id];
+    });
+
+    ["player1","player2","player3","player4"].forEach(id=>{
+        document.getElementById(id + "Name").innerText =
+            names.players?.[id] || defaultNames.players[id];
+    });
+});
 </script>
 
 </body>
