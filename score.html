@@ -69,12 +69,12 @@ input{
 
 <body>
 
-<h1>大喜利採点</h1>
+<h1>大喜利得点</h1>
 
 <div class="container">
 
 <div class="judge">
-    <h2>審査員A</h2>
+    <h2>poiちゃん</h2>
     <div class="score" id="judge1Score">0</div>
     <button onclick="addScore('judge1',1)">＋</button>
     <button onclick="addScore('judge1',-1)">－</button>
@@ -84,7 +84,7 @@ input{
 </div>
 
 <div class="judge">
-    <h2>審査員B</h2>
+    <h2>アニス</h2>
     <div class="score" id="judge2Score">0</div>
     <button onclick="addScore('judge2',1)">＋</button>
     <button onclick="addScore('judge2',-1)">－</button>
@@ -94,7 +94,7 @@ input{
 </div>
 
 <div class="judge">
-    <h2>審査員C</h2>
+    <h2>かろまさん</h2>
     <div class="score" id="judge3Score">0</div>
     <button onclick="addScore('judge3',1)">＋</button>
     <button onclick="addScore('judge3',-1)">－</button>
@@ -105,37 +105,37 @@ input{
 
 </div>
 
-<div id="total">合計: 0</div>
+<div id="total">得点合計: 0</div>
 
 <button class="resetButton" onclick="resetScores()">現在得点リセット</button>
 
 <div id="players">
 
-<h1>回答者累計</h1>
+<h1>回答者累計ポイント</h1>
 
 <div class="player">
-回答者A : <span id="player1Total">0</span>
+シズク : <span id="player1Total">0</span>
 <button onclick="addToPlayer('player1','回答者A')">回答者Aに加算</button>
 <input type="number" id="player1Input">
 <button onclick="setPlayerTotal('player1')">累計入力</button>
 </div>
 
 <div class="player">
-回答者B : <span id="player2Total">0</span>
+ゆらぎ : <span id="player2Total">0</span>
 <button onclick="addToPlayer('player2','回答者B')">回答者Bに加算</button>
 <input type="number" id="player2Input">
 <button onclick="setPlayerTotal('player2')">累計入力</button>
 </div>
 
 <div class="player">
-回答者C : <span id="player3Total">0</span>
+イオン : <span id="player3Total">0</span>
 <button onclick="addToPlayer('player3','回答者C')">回答者Cに加算</button>
 <input type="number" id="player3Input">
 <button onclick="setPlayerTotal('player3')">累計入力</button>
 </div>
 
 <div class="player">
-回答者D : <span id="player4Total">0</span>
+武頼 : <span id="player4Total">0</span>
 <button onclick="addToPlayer('player4','回答者D')">回答者Dに加算</button>
 <input type="number" id="player4Input">
 <button onclick="setPlayerTotal('player4')">累計入力</button>
