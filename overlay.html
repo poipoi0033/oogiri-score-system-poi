@@ -171,13 +171,25 @@ function setJudgeScore(id, value){
         animateScore(id);
     }
 
-    if(value >= 20){
-        el.classList.add("overLimit");
-    }else{
-        el.classList.remove("overLimit");
-    }
-}
+el.classList.remove("overLimit1");
+el.classList.remove("overLimit2");
+el.classList.remove("overLimit3");
 
+if(value >= 20){
+
+    if(id === "judge1Score"){
+        el.classList.add("overLimit1");
+    }
+
+    if(id === "judge2Score"){
+        el.classList.add("overLimit2");
+    }
+
+    if(id === "judge3Score"){
+        el.classList.add("overLimit3");
+    }
+
+}
 onValue(ref(db, 'scores'), (snapshot)=>{
     const data = snapshot.val() || {};
 
