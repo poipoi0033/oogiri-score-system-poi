@@ -161,12 +161,23 @@ function animateScore(id){
     el.classList.add("bump");
 }
 
-function animateScore(id){
+function setJudgeScore(id, value){
     const el = document.getElementById(id);
-    el.classList.remove("bump");
-    void el.offsetWidth;
-    el.classList.add("bump");
+    const oldValue = el.innerText;
+
+    el.innerText = value;
+
+    if(String(value) !== oldValue){
+        animateScore(id);
+    }
+
+    if(value >= 20){
+        el.classList.add("overLimit");
+    }else{
+        el.classList.remove("overLimit");
+    }
 }
+
 onValue(ref(db, 'scores'), (snapshot)=>{
     const data = snapshot.val() || {};
 
