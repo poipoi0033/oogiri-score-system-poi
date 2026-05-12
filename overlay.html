@@ -58,7 +58,7 @@ h2{
     transform:scale(1.05);
 }
 .score.bump{
-    animation: bump 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)
+    animation: bump 0.22s ease-out;
 }
 
 @keyframes bump{
@@ -162,7 +162,6 @@ function animateScore(id){
 }
 
 function setJudgeScore(id, value){
-
     const el = document.getElementById(id);
     const oldValue = el.innerText;
 
@@ -172,28 +171,13 @@ function setJudgeScore(id, value){
         animateScore(id);
     }
 
-    el.classList.remove("overLimit1");
-    el.classList.remove("overLimit2");
-    el.classList.remove("overLimit3");
-
     if(value >= 20){
-
-        if(id === "judge1Score"){
-            el.classList.add("overLimit1");
-        }
-
-        if(id === "judge2Score"){
-            el.classList.add("overLimit2");
-        }
-
-        if(id === "judge3Score"){
-            el.classList.add("overLimit3");
-        }
-
+        el.classList.add("overLimit");
+    }else{
+        el.classList.remove("overLimit");
     }
+}
 
-}
-}
 onValue(ref(db, 'scores'), (snapshot)=>{
     const data = snapshot.val() || {};
 
