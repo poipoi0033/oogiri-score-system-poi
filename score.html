@@ -141,7 +141,7 @@ function playPointSound(){
 }
 
 window.addScore = function(judge, amount){
-    playPointSound();
+    //playPointSound();
     const scoreRef = ref(db, 'scores/' + judge);
     onValue(scoreRef, (snapshot)=>{
         const current = snapshot.val() || 0;
