@@ -141,7 +141,7 @@ function playPointSound(){
 }
 
 window.addScore = function(judge, amount){
-    //playPointSound();
+    playPointSound();
     const scoreRef = ref(db, 'scores/' + judge);
     onValue(scoreRef, (snapshot)=>{
         const current = snapshot.val() || 0;
@@ -159,7 +159,7 @@ window.resetScores = function(){
 }
 
 function capped(value){
-    return Math.min(value || 0, 20);
+    return Math.min(Math.max(value || 0, 0), 20);
 }
 
 function getCurrentTotal(data){
