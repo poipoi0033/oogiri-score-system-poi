@@ -27,6 +27,10 @@ input{width:130px;font-size:24px;text-align:center;}
 .titleImage{width:350px;margin:0px;}
 .credit{margin-top:50px;font-size:16px;color:#aaaaaa;}
 button{border-radius:10px;}
+.funnyGif{
+    width:180px;
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -70,6 +74,13 @@ button{border-radius:10px;}
 </div>
 
 <button class="resetButton" onclick="resetScores()">現在得点リセット</button>
+
+<img
+    id="funnyButton"
+    src="still.png"
+    class="funnyGif"
+    onclick="playFunnyGif()"
+>
 
 <div id="players">
 <h1>回答者累計</h1>
@@ -281,6 +292,20 @@ onValue(ref(db, 'lastAction'), (snapshot)=>{
         document.getElementById("lastAction").innerText =
             "直前操作：" + action.message;
     }
+
+window.playFunnyGif = function(){
+
+    const el =
+        document.getElementById("funnyButton");
+
+    el.src = "funny.gif";
+
+    setTimeout(()=>{
+        el.src = "still.png";
+    }, 3000);
+
+}
+
 });
 </script>
 
