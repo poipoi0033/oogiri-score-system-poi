@@ -148,10 +148,14 @@ const defaultNames = {
   players:{player1:"回答者A",player2:"回答者B",player3:"回答者C",player4:"回答者D"}
 };
 
+function capped(value){
+    return Math.min(Math.max(value || 0, 0), 20);
+}
+
 function getCurrentTotal(data){
-    return Math.min(data.judge1 || 0, 20)
-         + Math.min(data.judge2 || 0, 20)
-         + Math.min(data.judge3 || 0, 20);
+    return capped(data.judge1)
+         + capped(data.judge2)
+         + capped(data.judge3);
 }
 
 function animateScore(id){
