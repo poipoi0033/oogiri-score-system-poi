@@ -28,11 +28,11 @@ input{width:130px;font-size:24px;text-align:center;}
 .credit{margin-top:50px;font-size:16px;color:#aaaaaa;}
 button{border-radius:10px;}
 .funnyGif{
-    width:40px;
+    width:30px;
     cursor:pointer;
 }
 .still.png{
-    width:40px;
+    width:30px;
     cursor:pointer;
 }
 </style>
@@ -43,6 +43,14 @@ button{border-radius:10px;}
 <img src="title.png" class="titleImage">
 
 <div class="container">
+
+<div id="gif">
+<img
+    id="funnyButton"
+    src="still.png"
+    onclick="playFunnyGif()"
+>
+</div>
 
 <div class="judge">
 <h2 id="judge1Name">審査員A</h2>
@@ -75,14 +83,6 @@ button{border-radius:10px;}
 
 <div id="total">
 <h1>合計: 0</h1>
-</div>
-
-<div id="gif">
-<img
-    id="funnyButton"
-    src="still.png"
-    onclick="playFunnyGif()"
->
 </div>
 
 <button class="resetButton" onclick="resetScores()">現在得点リセット</button>
