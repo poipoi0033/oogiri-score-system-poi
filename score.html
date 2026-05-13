@@ -28,7 +28,11 @@ input{width:130px;font-size:24px;text-align:center;}
 .credit{margin-top:50px;font-size:16px;color:#aaaaaa;}
 button{border-radius:10px;}
 .funnyGif{
-    width:60px;
+    width:40px;
+    cursor:pointer;
+}
+.still.png{
+    width:40px;
     cursor:pointer;
 }
 </style>
@@ -303,7 +307,7 @@ window.playFunnyGif = function(){
 
     setTimeout(()=>{
         el.src = "still.png";
-    }, 3000);
+    }, 1000);
 
 }
 
