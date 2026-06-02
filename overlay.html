@@ -72,10 +72,33 @@ h2{
         transform:scale(1);
     }
 }
+
+#overlayTimer{
+    position:fixed;
+    top:20px;
+    right:20px;
+    font-size:48px;
+    color:gold;
+    font-weight:bold;
+    text-shadow:0 0 8px rgba(0,0,0,0.8);
+}
+
 </style>
 </head>
 
 <body>
+
+<div id="overlayTimer">10:00</div>
+
+#overlayTimer{
+    position:fixed;
+    top:20px;
+    right:20px;
+    font-size:48px;
+    color:gold;
+    font-weight:bold;
+    text-shadow:0 0 8px rgba(0,0,0,0.8);
+}
 
 <div class="wrapper">
 
@@ -215,6 +238,41 @@ onValue(ref(db, 'names'), (snapshot)=>{
             names.players?.[id] || defaultNames.players[id];
     });
 });
+
+let overlayTimerState = {
+    running:false,
+    remaining:600,
+    endAt:null
+};
+
+function getOverlayRemainingSeconds(){
+    if(overlayTimerState.running && overlayTimerState.endAt){
+        return Math.max(0, Math.ceil((overlayTimerState.endAt - Date.now()) / 1000));
+    }
+    return overlayTimerState.remaining ?? 600;
+}
+
+function updateOverlayTimer(){
+    const seconds = getOverlayRemainingSeconds();
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+
+    document.getElementById("overlayTimer").innerText =
+        String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+}
+
+setInterval(updateOverlayTimer, 250);
+
+onValue(ref(db, "timer"), (snapshot)=>{
+    overlayTimerState = snapshot.val() || {
+        running:false,
+        remaining:600,
+        endAt:null
+    };
+
+    updateOverlayTimer();
+});
+
 </script>
 
 </body>
