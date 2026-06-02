@@ -35,10 +35,43 @@ button{border-radius:10px;}
     width:30px;
     cursor:pointer;
 }
+
+#timerBox{
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    padding:10px 15px;
+
+    background:#333;
+    border-radius:15px;
+
+    z-index:9999;
+}
+
+#timerBox button{
+    font-size:14px;
+    padding:4px 8px;
+}
+
+#timerDisplay{
+    font-size:60px;
+    color:gold;
+    font-weight:bold;
+}
+
 </style>
 </head>
 
 <body>
+
+<div id="timerBox">
+  <div id="timerDisplay">10:00</div>
+  <button onclick="startTimer()">開始</button>
+  <button onclick="pauseTimer()">一時停止</button>
+  <button onclick="resetTimer()">リセット</button>
+</div>
 
 <img src="title.png" class="titleImage">
 
@@ -156,6 +189,16 @@ function playPointSound(){
     const sound = new Audio("point.mp3");
     sound.volume = 0.6;
     sound.play();
+}
+
+function playTimerEndSound(){
+    try{
+        const sound = new Audio("timerEnd.mp3");
+        sound.volume = 0.7;
+        sound.play().catch(()=>{});
+    }catch(e){
+        console.log("timer end sound error", e);
+    }
 }
 
 window.addScore = function(judge, amount){
@@ -314,6 +357,82 @@ window.playFunnyGif = function(){
 }
 
 });
+
+let timerState = {
+    running:false,
+    remaining:600,
+    endAt:null
+};
+
+let timerViewInterval = null;
+
+function getRemainingSeconds(){
+    if(timerState.running && timerState.endAt){
+        return Math.max(0, Math.ceil((timerState.endAt - Date.now()) / 1000));
+    }
+    return timerState.remaining ?? 600;
+}
+
+function updateTimerDisplay(){
+    const seconds = getRemainingSeconds();
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+
+    document.getElementById("timerDisplay").innerText =
+        String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+
+    if(timerState.running && seconds === 0){
+        playTimerEndSound();
+        set(ref(db, "timer"), {
+            running:false,
+            remaining:0,
+            endAt:null
+        });
+    }
+}
+
+function startTimerView(){
+    if(timerViewInterval) return;
+    timerViewInterval = setInterval(updateTimerDisplay, 250);
+}
+
+window.startTimer = function(){
+    const remaining = getRemainingSeconds();
+
+    set(ref(db, "timer"), {
+        running:true,
+        remaining:remaining,
+        endAt:Date.now() + remaining * 1000
+    });
+}
+
+window.pauseTimer = function(){
+    set(ref(db, "timer"), {
+        running:false,
+        remaining:getRemainingSeconds(),
+        endAt:null
+    });
+}
+
+window.resetTimer = function(){
+    set(ref(db, "timer"), {
+        running:false,
+        remaining:600,
+        endAt:null
+    });
+}
+
+onValue(ref(db, "timer"), (snapshot)=>{
+    timerState = snapshot.val() || {
+        running:false,
+        remaining:600,
+        endAt:null
+    };
+
+    updateTimerDisplay();
+    startTimerView();
+});
+
 </script>
 
 </body>
