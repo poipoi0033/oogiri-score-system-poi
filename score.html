@@ -82,10 +82,11 @@ button{border-radius:10px;}
 }
 
 .playerMain{
-    display:flex;
-    justify-content:center;
+    display:grid;
+    grid-template-columns: 180px 90px 80px 130px 120px 130px;
     align-items:center;
-    gap:12px;
+    justify-content:center;
+    gap:10px;
     font-size:34px;
 }
 
@@ -173,7 +174,7 @@ button{border-radius:10px;}
 <div class="playerRow">
   <div class="playerMain">
     <span id="player1Name">回答者A</span> :
-    <span id="player1Total">0</span>
+    <span id="player1Total" class="playerScore">0</span>
 
     <button onclick="addToPlayer('player1')">加算</button>
     <input type="number" id="player1Input">
@@ -190,7 +191,7 @@ button{border-radius:10px;}
 <div class="playerRow">
   <div class="playerMain">
     <span id="player2Name">回答者B</span> :
-    <span id="player2Total">0</span>
+    <span id="player2Total" class="playerScore">0</span>
 
     <button onclick="addToPlayer('player2')">加算</button>
     <input type="number" id="player2Input">
@@ -206,7 +207,7 @@ button{border-radius:10px;}
 <div class="playerRow">
   <div class="playerMain">
     <span id="player3Name">回答者B</span> :
-    <span id="player3Total">0</span>
+    <span id="player3Total" class="playerScore">0</span>
 
     <button onclick="addToPlayer('player3')">加算</button>
     <input type="number" id="player3Input">
@@ -222,7 +223,7 @@ button{border-radius:10px;}
 <div class="playerRow">
   <div class="playerMain">
     <span id="player4Name">回答者B</span> :
-    <span id="player4Total">0</span>
+    <span id="player4Total" class="playerScore">0</span>
 
     <button onclick="addToPlayer('player4')">加算</button>
     <input type="number" id="player4Input">
