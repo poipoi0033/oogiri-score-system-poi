@@ -49,15 +49,32 @@ h2{
     text-align:center;
     font-weight:bold;
 }
-.overLimit{
-    font-size:80px !important;
-    color:#ffbb55 !important;
+#judge1Score.overLimit{
+    font-size:80px;
+    color:#7fffd4;
+
     text-shadow:
-        0 0 5px rgba(255,255,255,0.4),
-        0 0 10px rgba(255,180,80,0.5);
-    transform:scale(1.05);
+        0 0 5px rgba(255,255,255,0.5),
+        0 0 12px rgba(127,255,212,0.8);
 }
-.score.bump{
+
+#judge2Score.overLimit{
+    font-size:80px;
+    color:#ff99cc;
+
+    text-shadow:
+        0 0 5px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,120,180,0.8);
+}
+
+#judge3Score.overLimit{
+    font-size:80px;
+    color:#66ccff;
+
+    text-shadow:
+        0 0 5px rgba(255,255,255,0.5),
+        0 0 12px rgba(100,180,255,0.8);
+}.score.bump{
     animation: bump 0.22s ease-out;
 }
 
@@ -78,7 +95,7 @@ h2{
     top:20px;
     right:20px;
     font-size:48px;
-    color:#003495;
+    color:gold;
     font-weight:bold;
     text-shadow:0 0 8px rgba(0,0,0,0.8);
 }
